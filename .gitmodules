@@ -16,3 +16,6 @@
 [submodule "modules/pto-isa"]
 	path = modules/pto-isa
 	url = https://github.com/PTO-ISA/pto-isa.git
+[submodule "docs/pypto_top_level_design_documents"]
+	path = docs/pypto_top_level_design_documents
+	url = https://github.com/hengliao1972/pypto_top_level_design_documents.git
