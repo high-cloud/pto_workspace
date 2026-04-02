@@ -3,7 +3,7 @@
 	url = https://github.com/hengliao1972/pypto-serving.git
 [submodule "modules/pypto-lib"]
 	path = modules/pypto-lib
-	url = https://github.com/hengliao1972/pypto-lib.git
+	url = https://github.com/hw-native-sys/pypto-lib.git
 [submodule "modules/simpler"]
 	path = modules/simpler
 	url = https://github.com/ChaoWao/simpler.git
