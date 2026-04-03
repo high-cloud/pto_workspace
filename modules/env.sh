@@ -14,8 +14,21 @@ SIMPLER_ROOT="$WORKSPACE/simpler"
 PYPTO_LIB_ROOT="$WORKSPACE/pypto-lib"
 
 # ---------- Conda 环境 ----------
+CONDA_BASE=""
+if [[ -n "${CONDA_EXE:-}" ]]; then
+    CONDA_BASE="$(cd "$(dirname "$CONDA_EXE")/.." && pwd)"
+elif command -v conda >/dev/null 2>&1; then
+    CONDA_BIN="$(command -v conda)"
+    CONDA_BASE="$(cd "$(dirname "$CONDA_BIN")/.." && pwd)"
+fi
+
+if [[ -z "$CONDA_BASE" || ! -f "$CONDA_BASE/etc/profile.d/conda.sh" ]]; then
+    echo "[ERROR] 无法定位 conda.sh，请确认 conda 已安装且可执行"
+    return 1 2>/dev/null || exit 1
+fi
+
 # shellcheck disable=SC1091
-source "$(conda info --base)/etc/profile.d/conda.sh"
+source "$CONDA_BASE/etc/profile.d/conda.sh"
 
 if ! conda activate "$CONDA_ENV_NAME" 2>/dev/null; then
     echo "[ERROR] conda 环境 '$CONDA_ENV_NAME' 不存在，请先运行以下命令创建："
@@ -29,13 +42,13 @@ if ! command -v g++-15 &>/dev/null; then
     GXX_CANDIDATE=""
     for candidate in g++-14 g++-13 g++; do
         if command -v "$candidate" &>/dev/null; then
-            GXX_CANDITATE="$(command -v "$candidate")"
+            GXX_CANDIDATE="$(command -v "$candidate")"
             break
         fi
     done
-    if [[ -n "$GXX_CANDITATE" ]]; then
-        ln -sf "$GXX_CANDITATE" "$CONDA_PREFIX/bin/g++-15"
-        echo "[SETUP] 已创建 g++-15 -> $(basename "$GXX_CANDITATE") 符号链接"
+    if [[ -n "$GXX_CANDIDATE" ]]; then
+        ln -sf "$GXX_CANDIDATE" "$CONDA_PREFIX/bin/g++-15"
+        echo "[SETUP] 已创建 g++-15 -> $(basename "$GXX_CANDIDATE") 符号链接"
     else
         echo "[WARN] 未找到可用的 g++，simpler sim 编译可能会失败"
     fi
@@ -98,4 +111,5 @@ echo " 快速开始:"
 echo "   cd $PYPTO_LIB_ROOT"
 echo "   python examples/beginner/hello_world.py -p a2a3sim -d 0"
 echo "   python examples/beginner/matmul.py -p a2a3sim -d 0"
+echo "   $WORKSPACE/../scripts/doctor.sh"
 echo ""

@@ -2,7 +2,7 @@
 
 ## 概述
 
-本指南记录搭建可运行 pypto-lib examples 环境的完整过程。**经实际验证，编译 + 执行 + 结果验证均可在无 Ascend NPU 硬件的 x86 机器上完成**，通过 simpler 的 `a2a3sim` CPU 模拟模式。
+本指南记录搭建可运行 pypto-lib examples 环境的完整过程。当前工作区只保留 `pypto-lib`、`pypto`、`simpler` 三个源码模块；`ptoas` 作为外部预编译工具安装。**经实际验证，编译 + 执行 + 结果验证均可在无 Ascend NPU 硬件的 x86 机器上完成**，通过 simpler 的 `a2a3sim` CPU 模拟模式。
 
 ## 环境信息
 
@@ -101,17 +101,13 @@ python examples/beginner/matmul.py -p a2a3sim -d 0
 
 完整流程：`pypto IR 编译 → ptoas 生成 C++ kernel → g++ 编译为 .so → simpler 线程模拟执行 → 结果对比验证`
 
-## 一键激活脚本
+## 一键激活与自检
 
-建议创建 `activate_env.sh`：
+优先使用仓库自带脚本：
 
 ```bash
-#!/bin/bash
-conda activate pypto-lib
-export PTOAS_ROOT=~/.local/ptoas/v0.19
-export PATH=$PTOAS_ROOT:$PATH
-export SIMPLER_ROOT=/path/to/pto_workspace/modules/simpler
-echo "pypto-lib environment activated. ptoas: $(ptoas --version)"
+source modules/env.sh
+scripts/doctor.sh
 ```
 
 ## 可用示例列表
@@ -142,7 +138,7 @@ pypto-lib examples
         ├── code_runner.py (编排编译+执行)
         ├── kernel_compiler.py (kernel → .so)
         ├── runtime_compiler.py (host runtime → .bin)
-        └── pto-isa (自动克隆)
+        └── pto-isa (由 simpler 在需要时自行拉取/缓存)
 ```
 
 ## CPU 模拟执行原理
@@ -208,7 +204,6 @@ GitHub API 限流。手动在浏览器下载：
 - PTOAS: https://github.com/zhangstevenunity/PTOAS
 - PTOAS Releases: https://github.com/zhangstevenunity/PTOAS/releases
 - simpler: https://github.com/ChaoWao/simpler
-- pto-isa: https://github.com/PTO-ISA/pto-isa
 - pypto-lib README: `modules/pypto-lib/README.md`
 
 ---
