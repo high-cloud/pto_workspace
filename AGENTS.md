@@ -17,7 +17,7 @@ External tools are still required, but they are not stored as submodules here:
 Before changing code or running examples:
 
 1. Read this file.
-2. Run `source modules/env.sh`.
+2. Run `source scripts/env.sh`.
 3. Run `scripts/doctor.sh`.
 4. Read module-specific instructions when working inside:
    - `modules/pypto/AGENTS.md`
@@ -30,7 +30,7 @@ If `scripts/doctor.sh` fails, fix the environment before debugging examples.
 The supported development path is CPU simulation on `a2a3sim`.
 
 ```bash
-source modules/env.sh
+source scripts/env.sh
 scripts/doctor.sh
 cd modules/pypto-lib
 python examples/beginner/hello_world.py -p a2a3sim -d 0
@@ -59,7 +59,7 @@ Detailed setup instructions live in:
 ## Useful Commands
 
 ```bash
-source modules/env.sh
+source scripts/env.sh
 scripts/doctor.sh
 
 cd modules/pypto

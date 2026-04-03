@@ -106,7 +106,7 @@ python examples/beginner/matmul.py -p a2a3sim -d 0
 优先使用仓库自带脚本：
 
 ```bash
-source modules/env.sh
+source scripts/env.sh
 scripts/doctor.sh
 ```
 

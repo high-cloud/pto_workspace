@@ -46,7 +46,7 @@ chmod +x ~/.local/ptoas/v0.19/ptoas ~/.local/ptoas/v0.19/bin/*
 5. Activate the workspace environment.
 
 ```bash
-source modules/env.sh
+source scripts/env.sh
 scripts/doctor.sh
 ```
 
@@ -65,4 +65,4 @@ scripts/doctor.sh
 - If `pypto` cannot import: reinstall `modules/pypto`
 - If `_task_interface` cannot import: reinstall `modules/simpler`
 - If `ptoas` is missing: reinstall the prebuilt binary and export `PTOAS_ROOT`
-- If `g++-15` is missing: let `modules/env.sh` create a symlink inside the conda env
+- If `g++-15` is missing: let `scripts/env.sh` create a symlink inside the conda env
