@@ -69,3 +69,13 @@ cd /path/to/pto_workspace/modules/pypto-lib
 python examples/beginner/hello_world.py -p a2a3sim -d 0
 python examples/beginner/matmul.py -p a2a3sim -d 0
 ```
+
+## Local Skills
+
+Repository-specific skills live under `.claude/skills/`.
+
+- `pypto-tile-dsl`: guidance for reading, writing, and reviewing PyPTO tile DSL
+  kernels and orchestration in this workspace
+
+When a task matches one of these skills, read its `SKILL.md` before editing
+code.
