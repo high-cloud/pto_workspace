@@ -1,9 +1,9 @@
 [submodule "modules/pypto-lib"]
 	path = modules/pypto-lib
-	url = https://github.com/hw-native-sys/pypto-lib.git
+	url = https://github.com/high-cloud/pypto-lib.git
 [submodule "modules/simpler"]
 	path = modules/simpler
-	url = https://github.com/ChaoWao/simpler.git
+	url = https://github.com/hw-native-sys/simpler.git
 [submodule "modules/pypto"]
 	path = modules/pypto
 	url = https://github.com/hw-native-sys/pypto.git
