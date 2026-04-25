@@ -91,19 +91,27 @@ fi
 export PTOAS_ROOT
 export PATH="$PTOAS_ROOT:$PATH"
 
-if [[ ! -d "$SIMPLER_ROOT" ]]; then
-    echo "[ERROR] simpler directory not found: $SIMPLER_ROOT"
-    return 1 2>/dev/null || exit 1
+SIMPLER_AVAILABLE=0
+if [[ -d "$SIMPLER_ROOT" ]]; then
+    export SIMPLER_ROOT
+    SIMPLER_AVAILABLE=1
+else
+    echo "[WARN] simpler directory not found: $SIMPLER_ROOT"
+    echo "       CPU simulation platforms such as a2a3sim may be unavailable."
 fi
-export SIMPLER_ROOT
 
 if ! python -c "from _task_interface import DataType" >/dev/null 2>&1; then
-    echo "[WARN] _task_interface is not installed. Building simpler in the active environment..."
-    (
-        cd "$SIMPLER_ROOT"
-        CC=/usr/bin/gcc CXX=/usr/bin/g++ pip install -e . --no-build-isolation
-    )
-    echo "[SETUP] simpler build/install complete"
+    if [[ "$SIMPLER_AVAILABLE" -eq 1 ]]; then
+        echo "[WARN] _task_interface is not installed. Building simpler in the active environment..."
+        (
+            cd "$SIMPLER_ROOT"
+            CC=/usr/bin/gcc CXX=/usr/bin/g++ pip install -e . --no-build-isolation
+        )
+        echo "[SETUP] simpler build/install complete"
+    else
+        echo "[WARN] _task_interface is not installed and simpler source is absent."
+        echo "       Device runs through task-submit may still work if the runtime is otherwise installed."
+    fi
 fi
 
 echo "==========================================="
@@ -112,13 +120,20 @@ echo "==========================================="
 echo " Conda env : $CONDA_ENV_NAME"
 echo " Python    : $(command -v python)"
 echo " ptoas     : $(ptoas --version 2>&1)  [$PTOAS_ROOT/ptoas]"
-echo " SIMPLER   : $SIMPLER_ROOT"
+if [[ "$SIMPLER_AVAILABLE" -eq 1 ]]; then
+    echo " SIMPLER   : $SIMPLER_ROOT"
+else
+    echo " SIMPLER   : NOT FOUND ($SIMPLER_ROOT)"
+fi
 echo " g++-15    : $(command -v g++-15 2>/dev/null || echo 'NOT FOUND')"
 echo "==========================================="
 echo
 echo " Quick start:"
 echo "   cd $PYPTO_LIB_ROOT"
-echo "   python examples/beginner/hello_world.py -p a2a3sim -d 0"
-echo "   python examples/beginner/matmul.py -p a2a3sim -d 0"
+echo "   task-submit --device auto --run \"python examples/beginner/hello_world.py -p a2a3 -d {}\""
+if [[ "$SIMPLER_AVAILABLE" -eq 1 ]]; then
+    echo "   python examples/beginner/hello_world.py -p a2a3sim -d 0"
+    echo "   python examples/beginner/matmul.py -p a2a3sim -d 0"
+fi
 echo "   $ROOT_DIR/scripts/doctor.sh"
 echo
